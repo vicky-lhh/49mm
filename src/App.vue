@@ -1,5 +1,5 @@
 <template>
-  <div>  
+  <div class="App">  
   <router-link to="/login">跳转</router-link>
   <router-view></router-view>
   </div>
