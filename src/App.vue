@@ -1,5 +1,8 @@
 <template>
-  <div>欢迎回来  <el-button type="danger">危险按钮</el-button></div>
+  <div>  
+  <router-link to="/login">跳转</router-link>
+  <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -10,6 +13,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less">
+  
 </style>
+
+
