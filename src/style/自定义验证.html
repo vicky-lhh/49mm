@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+    <div id="app">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+       
+            <el-form-item label="年龄" prop="age">
+              <el-input v-model.number="ruleForm.age"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+              <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+    </div>
+    <script>
+      new Vue({
+         el:"#app",
+         data:{
+            ruleForm:{
+               age:""
+             },
+            rules: {
+        
+            age: [
+            { validator: (rule,value,callback)=>{
+                if(!value){
+                    callback("不能为空")
+                }else if(value<18){
+                    callback("年龄大于18")
+                }else{
+                    callback()
+                }
+            }, trigger: 'blur' }
+          ]
+        }
+         },
+         methods: {
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
+    }
+        
+      })
+    </script>
+    <style>
+   
+    </style>
+</body>
+</html>

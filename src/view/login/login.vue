@@ -25,17 +25,17 @@
             prefix-icon="el-icon-lock"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="code">
-          <el-row>
-            <el-col :span="16">
-              <el-input v-model="form.code" placeholder="请输入验证码" prefix-icon="el-icon-key"></el-input>
-            </el-col>
-            <el-col :span="8">
-              <img class="code" src="@/assets/11.png" alt />
-            </el-col>
-          </el-row>
-        </el-form-item>
-        <el-form-item>
+         <el-form-item  prop="code">
+        <el-row>
+          <el-col :span="16" label="图形码">
+            <el-input v-model="form.code" placeholder="请输入图形码" prefix-icon="el-icon-key"></el-input>
+          </el-col>
+          <el-col :span="8">
+            <img class="code" :src="codeurl" @click="getcode" alt />
+          </el-col>
+        </el-row>
+      </el-form-item>
+        <el-form-item prop="ischeck">
           <el-checkbox v-model="form.ischeck">
             <span>我已阅读条款</span>
             <el-link type="primary">用户协议</el-link>和
@@ -46,17 +46,22 @@
         <el-form-item>
           <el-button class="btn" type="primary" @click="loginclick">登陆</el-button>
           <br />
-          <el-button class="btn" type="primary">注册</el-button>
+          <el-button class="btn" type="primary" @click="resgiter">注册</el-button>
+          
         </el-form-item>
       </el-form>
     </div>
     <div class="right">
       <img src="@/assets/login_banner_ele.png" alt />
     </div>
+    <resgiter ref="resg"></resgiter>
   </div>
 </template>
 
 <script>
+import resgiter from './resgiter.vue'
+import { tologin } from "@/api/login.js";
+import {saveToken,getToken} from "../../util/token.js"
 export default {
   name: "login",
   data() {
@@ -67,8 +72,32 @@ export default {
         code: "",
         ischeck: ""
       },
+       codeurl: process.env.VUE_APP_URL + "/captcha?type=login&t",
+     
       rules: {
-        phone: [{ required: true, message: "请输入手机号", trigger: "change" }],
+       phone: [
+          {
+            required: true,
+              //  validator自定义验证规则 value用的多，callback一定要调用
+            validator: (rule, value, callback) => {
+              let _reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+              if (_reg.test(value)) {
+                callback();
+              } else {
+                callback("输入正确手机号");
+              }
+            },
+            trigger: "change"
+          }
+        ],
+        ischeck:[{ required: true,validator: (rule, value, callback) => {
+             
+              if (value==true) {
+                callback();
+              } else {
+                callback("请勾选协议");
+              }
+            },},],
         password: [
           { required: true, message: "请争取输入密码", trigger: "change" },
           { min: 4, max: 10,message: "密码四到十位", trigger: "blur" }
@@ -80,12 +109,21 @@ export default {
       }
     };
   },
-
+  components:{
+      resgiter
+  },
   methods: {
     loginclick() {
-      this.$refs.form.validate(res => {
-        if (res) {
-          this.$message.success("我是message的成功");
+      this.$refs.form.validate(result => {
+        if (result) {
+         tologin(this.form).then(res=>{
+             window.console.log(res);
+              this.$message.success("登录的成功");
+               saveToken(res.data.token);
+              
+                  this.$router.push("/home")
+               
+         })
         } else {
           this.$notify.error({
             title: "错误",
@@ -93,8 +131,24 @@ export default {
           });
         }
       });
+    },
+     getcode(){
+        // process.env.VUE_APP_URL + "/captcha?type=sendsms&t="+Date.now()或者随机数 Math.random()*100 
+         this.codeurl = this.codeurl +Date.now();
+    },
+
+    resgiter(){
+       this.$refs.resg.dialogFormVisible= true
     }
-  }
+  },
+  mounted() {
+    // alert(process.env.VUE_APP_URL);
+  },
+  created() {
+     if(getToken()){
+                  this.$router.push("/home")
+               }
+  },
 };
 </script>
 
@@ -142,7 +196,8 @@ export default {
       height: 45px;
     }
     .code {
-      height: 45px;
+      height: 42px;
+      width: 115px;
     }
     .btn {
       width: 100%;
