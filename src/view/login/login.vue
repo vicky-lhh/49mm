@@ -54,7 +54,7 @@
     <div class="right">
       <img src="@/assets/login_banner_ele.png" alt />
     </div>
-    <resgiter ref="resg"></resgiter>
+    <resgiter ref="resg"></resgiter>5
   </div>
 </template>
 

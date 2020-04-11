@@ -8,17 +8,20 @@
         <img class="marginlr" src="../../assets/xiao1.png" alt />
         <span class="title">黑马面面</span>
       </div>
-      <div class="right">
-        <img class="avatar" :src="userinfo.avatar" alt />
-        <span class="name">{{userinfo.username}},欢迎你</span>
+
+     <div class="right">
+        <img class="avatar" :src="$store.state.userinfo.avatar" alt />
+        <span class="name">{{$store.state.userinfo.username}},欢迎你</span>
         <el-button type="primary" @click="exit">退出</el-button>
-      </div>
+    </div>
+
+
     </el-header>
     <el-container>
       <el-aside width="auto" class="aside">
          <el-menu   :router="true"
-       
-         :default-active="$route.fullPath" class="el-menu-vertical-demo" :collapse="collapse">
+          :default-active="$route.fullPath" class="el-menu-vertical-demo" 
+          :collapse="collapse">
         <el-menu-item index="/home/chart">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
@@ -57,6 +60,7 @@
 import {getinfo , exitlogin} from '../../api/home.js'
 import {removeToken,getToken} from "@/util/token.js"
 
+
 export default {
     data() {
         return {
@@ -72,12 +76,13 @@ export default {
         getinfo().then(res=>{
             this.userinfo = res.data;
             this.userinfo.avatar = process.env.VUE_APP_URL+"/"+this.userinfo.avatar
+            this.$store.state.userinfo=this.userinfo
             console.log("用户信息",res)
         })
     },
     methods: {
       exit() {
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        this.$confirm('确定退出登录?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -86,7 +91,7 @@ export default {
                //   移除token
             removeToken();
             // 跳至登陆页
-            this.$router.push("/login");
+            this.$router.push("/");
          })
         })
       }

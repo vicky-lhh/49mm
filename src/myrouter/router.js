@@ -15,7 +15,7 @@ import 'nprogress/nprogress.css'
 Vue.use( VueRouter)
 const router = new  VueRouter({
     routes:[{
-      path:"/login",
+      path:"/",
        component:login
     },{
       path:"/home",
@@ -23,15 +23,31 @@ const router = new  VueRouter({
        redirect:"/home/userlist",
        children:[
          { path:"chart",
-         component:chart},
+         component:chart,
+         meta:{
+          title:"数据概览"
+        }},
          { path:"userlist",
-         component:userlist},
+         component:userlist,
+         meta:{
+           title:"用户列表"
+         }
+        },
          { path:"question",
-         component:question},
+         component:question,
+         meta:{
+          title:"题库列表"
+        }},
          { path:"businness",
-         component:businness},
+         component:businness,
+         meta:{
+          title:"企业列表"
+        }},
          { path:"subject",
-         component:subject},
+         component:subject,
+         meta:{
+          title:"学科列表"
+        }},
         ]
     }
    ]
@@ -50,8 +66,9 @@ const router = new  VueRouter({
 
 })
 
-router.afterEach(() => {
+router.afterEach((to) => {
   NProgress.done()
+  document.title=to.meta.title
 })
 
  export default router

@@ -1,12 +1,12 @@
 <template>
-  <div>学科列表</div>
+  <div>
+      <span>{{$store.state.sona}}</span>
+  </div>
 </template>
 
 <script>
 export default {
-   created() {
-     
-   },
+
 }
 </script>
 

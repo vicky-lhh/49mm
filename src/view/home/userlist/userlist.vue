@@ -4,7 +4,10 @@
 
 <script>
 export default {
-
+  created() {
+    console.log("luyyyyy",this.$route);
+    document.title=this.$route.meta.title
+  },
 }
 </script>
 
