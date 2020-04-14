@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+    <div id="app">
+        <el-select v-model="selectValue">
+            <el-option value="hb" label="湖北"></el-option>
+            <el-option value="hn" label="湖南"></el-option>
+            <el-option value="jx" label="江西"></el-option>
+        </el-select>
+    </div>
+    <script>
+        new Vue({
+            el:"#app",
+            data() {
+                return {
+                    selectValue:""
+                }
+            },
+        })
+    </script>
+</body>
+</html>

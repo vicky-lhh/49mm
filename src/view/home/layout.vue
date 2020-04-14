@@ -17,7 +17,7 @@
 
 
     </el-header>
-    <el-container>
+    <el-container class="main">
       <el-aside width="auto" class="aside">
          <el-menu   :router="true"
           :default-active="$route.fullPath" class="el-menu-vertical-demo" 
@@ -140,7 +140,10 @@ export default {
       }
     }
   }
- 
+ .main{
+   height: 100%;
+   background-color:#E8E9EC ;
+ }
   .aside {
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 2px 5px 0px rgba(63, 63, 63, 0.35);

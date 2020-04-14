@@ -1,24 +1,38 @@
 <template>
   <div class="App">  
   <router-link to="/">跳转</router-link>
+
   <span>{{$store.state.tip}}</span>
   <sona></sona>
   <sonb></sonb>
-  <router-view></router-view>
   
+  <propmit @zdy="search" :msg="msg"></propmit>
+  <router-view></router-view>
+ 
   </div>
 </template>
 
 <script>
 import sona from './lianxi/sona.vue'
 import sonb from './lianxi/sonb.vue'
+import  propmit from "./lianxi/propemit.vue"
 
 
 export default {
+  data() {
+    return {
+      msg:"haha"
+    }
+  },
    components:{
      sona,
-     sonb
-   }
+     sonb,
+      propmit
+   },methods: {
+     search(){
+        alert('33333');
+     }
+   },
 }
 </script>
 

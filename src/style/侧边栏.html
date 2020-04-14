@@ -53,6 +53,16 @@
             
         })
     </script>
+    <script>
+      let a = {xx:123}
+      let b =a
+      let a1 =10
+      let b1 =a1
+      a1=20
+      a.xx=456
+      console.log(b.xx); 456
+      console.log(b1); 10
+    </script>
     <style>
          .el-menu-vertical-demo:not(.el-menu--collapse) {
             width: 200px;
