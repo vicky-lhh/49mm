@@ -51,6 +51,7 @@
             <el-button  @click="del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
+        
       </el-table>
 
       <div class="progress">
