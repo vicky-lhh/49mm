@@ -22,12 +22,17 @@
          <el-menu   :router="true"
           :default-active="$route.fullPath" class="el-menu-vertical-demo" 
           :collapse="collapse">
-        <el-menu-item index="/home/chart">
-            <i class="el-icon-pie-chart"></i>
-            <span slot="title">数据概览</span>
+        <el-menu-item 
+        :index="'/home/'+item.path" 
+        v-for="(item, index) in $router.options.routes[1].children" 
+        :key="index"
+        v-show="item.meta.rules.includes($store.state.role)"
+        >
+            <i :class="item.meta.icon"></i>
+            <span slot="title">{{item.meta.title}}</span>
           </el-menu-item>
 
-          <el-menu-item index="/home/userlist">
+          <!-- <el-menu-item index="/home/userlist">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
@@ -46,7 +51,7 @@
         <el-menu-item index="/home/subject">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
-          </el-menu-item>
+          </el-menu-item> -->
         </el-menu>
       </el-aside>
       <el-main>
@@ -69,6 +74,7 @@ export default {
         }
     },
     created() {
+      console.log("路由少的地方",this.$router);
        if(!getToken()){
                   this.$router.push("/")
                }
@@ -77,7 +83,19 @@ export default {
             this.userinfo = res.data;
             this.userinfo.avatar = process.env.VUE_APP_URL+"/"+this.userinfo.avatar
             this.$store.state.userinfo=this.userinfo
+           this.$store.state.role = res.data.role
             console.log("用户信息",res)
+            if(res.data.status==0){
+              this.$message.warning("账号已禁用，请联系管理员")
+              removeToken();
+              this.$router.push("/")
+            }else{
+              if(!this.$route.meta.rules.includes(res.data.role)){
+                this.$message.warning("无权利访问");
+                removeToken();
+                this.$router.push("/")
+              }
+            }
         })
     },
     methods: {

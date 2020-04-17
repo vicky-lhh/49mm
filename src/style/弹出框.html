@@ -50,6 +50,16 @@
         
       })
     </script>
+    <script>
+      let obj = {
+        name:"hhh",
+        1:"jjj"
+      }
+      for(let key in obj){
+           console.log(obj[key])
+           console.log(Object.prototype.toString.call(key))  //string
+      }
+    </script>
     <style>
       .title{
           width: 100%;

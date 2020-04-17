@@ -17,17 +17,18 @@
 
       <el-form-item label="角色" prop="role_id">
         <el-select v-model="form.role_id">
-          <el-option value="1" label="麻雀"></el-option>
+          <!-- <el-option value="1" label="超级管理员"></el-option>
           <el-option value="2" label="管理员"></el-option>
           <el-option value="3" label="教师"></el-option>
-          <el-option value="4" label="学生"></el-option>
+          <el-option value="4" label="学生"></el-option> -->
+            <el-option  v-for="(val,key,index) in $store.state.roleObj" :key="index"  :value="+key" :label="val"></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item label="状态" prop="status">
         <el-select v-model="form.status">
-          <el-option value="0" label="禁用"></el-option>
-          <el-option value="1" label="启用"></el-option>
+          <el-option :value="0" label="禁用"></el-option>
+          <el-option :value="1" label="启用"></el-option>
         </el-select>
       </el-form-item>
 
@@ -115,6 +116,10 @@ export default {
       "dialogFormVisible"(newval){
           if(newval==false){
             this.$refs.form.resetFields();
+          }else if(newval==true){
+              this.$nextTick(()=>{
+                this.$refs.form.clearValidate()
+              })
           }
       }
   },

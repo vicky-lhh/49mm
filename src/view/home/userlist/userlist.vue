@@ -11,27 +11,30 @@
         </el-form-item>
 
         <el-form-item label="角色" prop="role_id">
-          <el-input class="setwidth" v-model="form.role_id"></el-input>
+         
+             <el-select  v-model="form.role_id" placeholder="请选择角色" class="setwidth">
+                <el-option  v-for="(val,key,index) in $store.state.roleObj" :key="index"  :value="key" :label="val"></el-option>
+              </el-select>
         </el-form-item>
 
-        <el-form-item label="状态">
+        <!-- <el-form-item label="状态">
           <el-select v-model="form.status" placeholder="请选择状态" class="setwidth">
             <el-option value="1" label="启用"></el-option>
             <el-option value="0" label="禁用"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item>   -->
 
         <el-form-item>
           <el-button type="primary" @click="search">搜索</el-button>
           <el-button @click="reset">清除</el-button>
-          <el-button type="primary" @click="add">+新增企业</el-button>
+          <el-button type="primary" @click="add">+新增用户</el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <br />
     <br />
     <el-card>
-      <el-table :data="tableData" style="width: 100%" class="table">
+      <el-table :data="tableData" style="width: 100%" class="table" :border="true">
         <el-table-column label="序号" width="180">
           <template
             slot-scope="scope"
@@ -41,7 +44,7 @@
         <el-table-column label="用户名" prop="username"></el-table-column>
         <el-table-column label="电话" prop="phone"></el-table-column>
         <el-table-column label="邮箱" prop="email"></el-table-column>
-        <el-table-column label="角色" prop="role_id"></el-table-column>
+        <el-table-column label="角色" prop="role"></el-table-column>
         <el-table-column label="备注" prop="remark"></el-table-column>
 
         <el-table-column label="状态" width="100px">
@@ -55,7 +58,7 @@
               @click="setstatus(scope,scope.row.id)"
               :type="scope.row.status==1? 'info' :'success'"
             >{{scope.row.status==1?'禁用':"启用"}}</el-button>
-            <el-button type="danger" @click="del(scope.row.id)">删除</el-button>
+            <el-button type="danger"   @click="del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -92,7 +95,8 @@ export default {
         username: "",
         email: "",
         role_id: "",
-        status: ""
+       
+        // status: ""
       },
       pagination: {
         pageSize: 2,
@@ -164,6 +168,7 @@ export default {
         ...this.form
       };
       getUserlist(parmas).then(res => {
+        console.log("用户",res);
         this.tableData = res.data.items;
         this.pagination.total = res.data.pagination.total;
       });
@@ -180,7 +185,7 @@ export default {
 <style lang="less">
 .userlist {
   .setwidth {
-    width: 90px;
+    width: 150px;
   }
   .progress {
     text-align: center;
